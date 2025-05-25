@@ -1,14 +1,19 @@
 import { RegisterUserUseCase } from "../src/app/userCases/RegisterUserUseCase";
 import { Role } from "../src/domain/enums/Role";
 import { IUserRepository } from "../src/domain/repository/IUserRepository";
+import { IPasswordHasher } from "../src/domain/services/IPasswordHasher";
 import { InMemoryUserRepository } from "../src/infra/inMemory/InMemoryUserRepository";
+import { FakePasswordHasher } from "./fakes/FakePasswordHasher";
 
 describe("REGISTER USER", () => {
   let userRepo: IUserRepository;
+  let passwordHasher: IPasswordHasher;
   let sut: RegisterUserUseCase;
+
   beforeEach(async () => {
     userRepo = new InMemoryUserRepository();
-    sut = new RegisterUserUseCase(userRepo);
+    passwordHasher = new FakePasswordHasher();
+    sut = new RegisterUserUseCase(userRepo, passwordHasher);
   });
   it("should register a new user", async () => {
     const input = {
