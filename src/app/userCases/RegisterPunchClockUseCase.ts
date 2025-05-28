@@ -11,7 +11,7 @@ export class RegisterPunchClockUseCase {
     const hasPunchClockAlreadyRegistered = punchClockList.some(
       (punchClock) =>
         punchClock.type.toString() !== "" &&
-        isSameDay(new Date(punchClock.timestamp), new Date())
+        isSameDay(punchClock.timestamp, new Date())
     );
     if (hasPunchClockAlreadyRegistered) {
       throw new Error("Punch clock already registered");
