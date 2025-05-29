@@ -1,0 +1,9 @@
+services:
+  app:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_DATABASE=db-sistema-pontos
+      - POSTGRESQL_PASSWORD=docker
