@@ -2,9 +2,34 @@ POST http://localhost:8080/user
 Content-Type: application/json
 
 {
-    "name": "Fulano",
-    "email": "email1@email.com",
+    "name": "Sicrano",
+    "email": "email2@email.com",
     "password": "123456",
-    "role": "employee"
+    "role": "admin"
 }
 ###
+
+
+POST http://localhost:8080/sessions
+Content-Type: application/json
+
+{
+    "email": "email1@email.com",
+    "password": "123456"
+}
+###
+
+
+
+GET http://localhost:8080/test
+Content-Type: application/json
+###
+
+
+POST http://localhost:8080/punch-clock
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE0OGQyZS04YTc4LTRlNDAtYTRhNC0zYmM2YWMzYTdlZTMiLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE3NDg1NjM3NTQsImV4cCI6MTc0ODU2NzM1NH0.3qU9_dlO15vlFZWaaSMHtlyo3_OVjcWZVjMh0Hq9q_4
+
+{
+    "type":"checkIn"
+}

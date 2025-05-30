@@ -1,6 +1,7 @@
 import { IUserRepository } from "../../domain/repository/IUserRepository";
 import { AuthenticateUserDTO } from "../../communication/request/AuthenticateUserDTO";
 import { IPasswordHasher } from "../../domain/services/IPasswordHasher";
+import { AppError } from "../../http/middlewares/errorHandler";
 
 export class AuthenticateUserUseCase {
   constructor(
@@ -10,12 +11,12 @@ export class AuthenticateUserUseCase {
 
   async execute(input: AuthenticateUserDTO) {
     const user = await this.userRepo.findByEmail(input.email);
-    if (!user) throw new Error("Invalid credentials");
+    if (!user) throw new AppError(400, "Invalid credentials");
     const doesPasswordMatches = await this.passwordHasher.compare(
       input.password,
       user.password
     );
-    if (!doesPasswordMatches) throw new Error("Invalid credentials");
+    if (!doesPasswordMatches) throw new AppError(400, "Invalid credentials");
     return { user };
   }
 }

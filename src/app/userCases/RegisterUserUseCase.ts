@@ -2,6 +2,7 @@ import { CreateUserDTO } from "../../communication/request/CreateUserDTO";
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repository/IUserRepository";
 import { IPasswordHasher } from "../../domain/services/IPasswordHasher";
+import { AppError } from "../../http/middlewares/errorHandler";
 
 export class RegisterUserUseCase {
   constructor(
@@ -11,7 +12,7 @@ export class RegisterUserUseCase {
 
   async execute(input: CreateUserDTO): Promise<void> {
     const user = await this.userRepo.findByEmail(input.email);
-    if (user) throw new Error("User already exists");
+    if (user) throw new AppError(400, "User already exists");
     const passwordHash = await this.passwordHasher.hash(input.password);
     const newUser = User.create({ ...input, password: passwordHash });
     await this.userRepo.register(newUser);
