@@ -16,7 +16,10 @@ describe("REGISTER PUNCH CLOCK", () => {
       userId: "user-1",
       type: PunchClockType.checkIn,
     };
-    const output = await sut.execute(input);
+    const output = await sut.execute(
+      { type: input.type },
+      { userId: input.userId }
+    );
     expect(output.timestamp).toBeInstanceOf(Date);
   });
   it("should not be able to register the same punch clock twice in the same day", async () => {
@@ -24,9 +27,9 @@ describe("REGISTER PUNCH CLOCK", () => {
       userId: "user-1",
       type: PunchClockType.checkIn,
     };
-    await sut.execute(input);
-    await expect(sut.execute(input)).rejects.toThrow(
-      "Punch clock already registered"
-    );
+    await sut.execute({ type: input.type }, { userId: input.userId });
+    await expect(
+      sut.execute({ type: input.type }, { userId: input.userId })
+    ).rejects.toThrow("Punch clock already registered");
   });
 });
