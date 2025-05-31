@@ -12,8 +12,8 @@ export interface IPunchClockRepository {
   getAll(): Promise<PunchClock[]>;
   findByFilters(input: {
     adminId: string;
-    employeeId?: string;
     startDate?: Date;
     endDate?: Date;
+    employeeId?: string;
   }): Promise<PunchClock[]>;
 }

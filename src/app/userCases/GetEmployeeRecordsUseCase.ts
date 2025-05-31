@@ -1,11 +1,17 @@
-import { GetEmployeeRecordsDTO } from "../../communication/request/GetEmployeeRecordsDTO";
+import {
+  GetEmployeeRecordsHeaderDTO,
+  GetEmployeeRecordsQueryDTO,
+} from "../../communication/request/GetEmployeeRecordsDTO";
 import { PunchClockType } from "../../domain/enums/PunchClockType";
 import { IPunchClockRepository } from "../../domain/repository/IPunchClockRepository";
 
 export class GetEmployeeRecordsUseCase {
   constructor(private readonly punchClockRepo: IPunchClockRepository) {}
 
-  async execute(input: GetEmployeeRecordsDTO): Promise<
+  async execute(
+    { employeeId, endDate, startDate }: GetEmployeeRecordsQueryDTO,
+    { adminId }: GetEmployeeRecordsHeaderDTO
+  ): Promise<
     {
       employee: string;
       date: string;
@@ -14,8 +20,13 @@ export class GetEmployeeRecordsUseCase {
       hoursWorked: number;
     }[]
   > {
-    if (!input.adminId) throw new Error("Unauthenticated");
-    const filtered = await this.punchClockRepo.findByFilters(input);
+    if (!adminId) throw new Error("Unauthenticated");
+    const filtered = await this.punchClockRepo.findByFilters({
+      adminId,
+      startDate,
+      endDate,
+      employeeId,
+    });
     const grouped = new Map<
       string,
       { userId: string; date: string; checkIn?: Date; checkOut?: Date }

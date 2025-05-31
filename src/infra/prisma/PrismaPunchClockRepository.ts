@@ -43,6 +43,14 @@ export class PrismaPunchClockRepository implements IPunchClockRepository {
     startDate?: Date;
     endDate?: Date;
   }): Promise<PunchClock[]> {
-    throw new Error("Method not implemented.");
+    return await db.punchClock.findMany({
+      where: {
+        userId: input.employeeId,
+        timestamp: {
+          gte: input.startDate,
+          lte: input.endDate,
+        },
+      },
+    });
   }
 }

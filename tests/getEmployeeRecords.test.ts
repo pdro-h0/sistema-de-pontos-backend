@@ -35,7 +35,14 @@ describe("GET EMPLOYEE RECORDS", () => {
       startDate: new Date("2020-01-03"),
       endDate: new Date("2029-01-10"),
     };
-    const output = await sut.execute(input);
+    const output = await sut.execute(
+      {
+        employeeId: input.employeeId,
+        endDate: input.endDate,
+        startDate: input.startDate,
+      },
+      { adminId: input.adminId }
+    );
     expect(output).toHaveLength(1);
     expect(output).toEqual([
       expect.objectContaining({ employee: "Employee user-2" }),
@@ -59,7 +66,10 @@ describe("GET EMPLOYEE RECORDS", () => {
     const input = {
       adminId: "1",
     };
-    const output = await sut.execute(input);
+    const output = await sut.execute(
+      { employeeId: undefined, endDate: undefined, startDate: undefined },
+      { adminId: input.adminId }
+    );
     expect(output).toHaveLength(2);
   });
 });

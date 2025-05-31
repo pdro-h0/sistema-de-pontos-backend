@@ -2,16 +2,20 @@ import { GenerateEmployeesRecordsUseCase } from "../src/app/userCases/GenerateEm
 import { PunchClock } from "../src/domain/entities/PunchClock";
 import { PunchClockType } from "../src/domain/enums/PunchClockType";
 import { IPunchClockRepository } from "../src/domain/repository/IPunchClockRepository";
+import { IUserRepository } from "../src/domain/repository/IUserRepository";
 import { InMemoryPunchClockRepository } from "../src/infra/inMemory/InMemoryPunchClockRepository";
+import { InMemoryUserRepository } from "../src/infra/inMemory/InMemoryUserRepository";
 import { registerTestPunchClock } from "./factories/punchClockFactory";
 
 describe("GENERATE EMPLOYEES RECORDS", () => {
   let punchClockRepo: IPunchClockRepository;
+  let userRepo: IUserRepository;
   let sut: GenerateEmployeesRecordsUseCase;
 
   beforeEach(async () => {
     punchClockRepo = new InMemoryPunchClockRepository();
-    sut = new GenerateEmployeesRecordsUseCase(punchClockRepo);
+    userRepo = new InMemoryUserRepository();
+    sut = new GenerateEmployeesRecordsUseCase(punchClockRepo, userRepo);
     await registerTestPunchClock(punchClockRepo);
   });
   it("should generate employees records", async () => {
@@ -34,7 +38,10 @@ describe("GENERATE EMPLOYEES RECORDS", () => {
       startDate: new Date("2025-08-01"),
       endDate: new Date("2025-08-06"),
     };
-    const output = await sut.execute(input);
+    const output = await sut.execute(
+      { endDate: input.endDate, startDate: input.startDate },
+      { adminId: input.adminId }
+    );
     expect(output.totalHours).toEqual(5);
     expect(output.employees).toHaveLength(1);
   });
@@ -56,7 +63,10 @@ describe("GENERATE EMPLOYEES RECORDS", () => {
     const input = {
       adminId: "1",
     };
-    const output = await sut.execute(input);
+    const output = await sut.execute(
+      { endDate: undefined, startDate: undefined },
+      { adminId: input.adminId }
+    );
     expect(output.totalHours).toEqual(16);
     expect(output.employees).toHaveLength(2);
   });

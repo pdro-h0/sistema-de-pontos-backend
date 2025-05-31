@@ -3,7 +3,8 @@ import "express";
 declare module "express" {
   interface Request {
     user?: {
-      userId: string;
+      userId?: string;
+      adminId?: string;
       role: "admin" | "employee";
     };
   }

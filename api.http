@@ -1,4 +1,5 @@
-POST http://localhost:8080/user
+@baseURL = http://localhost:8080
+POST {{baseURL}}/user
 Content-Type: application/json
 
 {
@@ -10,26 +11,45 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:8080/sessions
+
+# @name loginUser
+POST {{baseURL}}/sessions
 Content-Type: application/json
 
 {
-    "email": "email1@email.com",
+    "email": "email4@email.com",
     "password": "123456"
 }
 ###
+@tokenUser = {{loginUser.response.body.token}}
 
 
 
-GET http://localhost:8080/test
+POST {{baseURL}}/punch-clock
 Content-Type: application/json
-###
-
-
-POST http://localhost:8080/punch-clock
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE0OGQyZS04YTc4LTRlNDAtYTRhNC0zYmM2YWMzYTdlZTMiLCJyb2xlIjoiZW1wbG95ZWUiLCJpYXQiOjE3NDg1NjM3NTQsImV4cCI6MTc0ODU2NzM1NH0.3qU9_dlO15vlFZWaaSMHtlyo3_OVjcWZVjMh0Hq9q_4
+Authorization: Bearer {{tokenUser}}
 
 {
     "type":"checkIn"
 }
+###
+
+
+
+GET {{baseURL}}/punch-clock/history
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+###
+
+
+
+GET {{baseURL}}/admin/punch-clock?startDate=2025-05-30
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+###
+
+
+
+GET {{baseURL}}/admin/reports
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}

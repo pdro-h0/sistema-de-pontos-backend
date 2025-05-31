@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import { env } from "../../env";
 
 interface JwtPayload {
-  userId: string;
+  userId?: string;
+  adminId?: string;
   role: "admin" | "employee";
 }
 
@@ -20,10 +21,15 @@ export const ensureAuthenticated = (
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-    req.user = {
-      userId: decoded.userId,
-      role: decoded.role,
-    };
+    decoded.role === "employee"
+      ? (req.user = {
+          userId: decoded.userId,
+          role: decoded.role,
+        })
+      : (req.user = {
+          adminId: decoded.userId,
+          role: decoded.role,
+        });
     next();
   } catch (error) {
     console.error(error);

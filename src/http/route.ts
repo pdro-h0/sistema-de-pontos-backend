@@ -1,9 +1,12 @@
-import { Request, Router } from "express";
+import { Router } from "express";
 import { registerUserController } from "./controllers/registerUserController";
 import { authenticateUserController } from "./controllers/authenticateUseController";
 import { ensureAuthenticated } from "./middlewares/ensureAuthenticated";
 import { ensureRole } from "./middlewares/ensureRole";
 import { RegisterPunchClockController } from "./controllers/registerPunchClockController";
+import { getPunchHisotryController } from "./controllers/GetPunchHisotryController";
+import { getEmployeesRecordsController } from "./controllers/getEmployeesRecordsController";
+import { generateEmployeesRecordsController } from "./controllers/generateEmployeesRecordsController";
 
 export const router = Router();
 router.post("/user", registerUserController);
@@ -15,14 +18,21 @@ router.post(
   ensureRole("employee"),
   RegisterPunchClockController
 );
-
 router.get(
-  "/test",
+  "/punch-clock/history",
+  ensureAuthenticated,
+  ensureRole("employee"),
+  getPunchHisotryController
+);
+router.get(
+  "/admin/punch-clock",
   ensureAuthenticated,
   ensureRole("admin"),
-  (req: Request, res) => {
-    res.json({
-      message: `Bem vindo ${req.user?.id} sua role é ${req.user?.role}`,
-    });
-  }
+  getEmployeesRecordsController
+);
+router.get(
+  "/admin/reports",
+  ensureAuthenticated,
+  ensureRole("admin"),
+  generateEmployeesRecordsController
 );

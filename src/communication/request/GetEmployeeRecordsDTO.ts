@@ -1,9 +1,16 @@
 import { z } from "zod";
 
-export const getEmployeeRecordsSchema = z.object({
-  adminId: z.string().uuid(),
+export const getEmployeeRecordsQuerySchema = z.object({
   employeeId: z.string().uuid().optional(),
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
 });
-export type GetEmployeeRecordsDTO = z.infer<typeof getEmployeeRecordsSchema>;
+export const getEmployeeRecordsHeaderSchema = z.object({
+  adminId: z.string().uuid(),
+});
+export type GetEmployeeRecordsQueryDTO = z.infer<
+  typeof getEmployeeRecordsQuerySchema
+>;
+export type GetEmployeeRecordsHeaderDTO = z.infer<
+  typeof getEmployeeRecordsHeaderSchema
+>;
