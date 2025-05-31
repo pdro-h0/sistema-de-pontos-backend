@@ -4,7 +4,7 @@ import { authenticateUserController } from "./controllers/authenticateUseControl
 import { ensureAuthenticated } from "./middlewares/ensureAuthenticated";
 import { ensureRole } from "./middlewares/ensureRole";
 import { RegisterPunchClockController } from "./controllers/registerPunchClockController";
-import { getPunchHisotryController } from "./controllers/GetPunchHisotryController";
+import { getPunchHisotryController } from "./controllers/getPunchHisotryController";
 import { getEmployeesRecordsController } from "./controllers/getEmployeesRecordsController";
 import { generateEmployeesRecordsController } from "./controllers/generateEmployeesRecordsController";
 
