@@ -1,5 +1,5 @@
-import { PrismaClient } from "../../generated/prisma";
 import { env } from "../env";
+import { PrismaClient } from "@prisma/client";
 
 declare global {
   var cachedPrisma: PrismaClient;
