@@ -2,16 +2,20 @@ import { GetEmployeeRecordsUseCase } from "../src/app/userCases/GetEmployeeRecor
 import { PunchClock } from "../src/domain/entities/PunchClock";
 import { PunchClockType } from "../src/domain/enums/PunchClockType";
 import { IPunchClockRepository } from "../src/domain/repository/IPunchClockRepository";
+import { IUserRepository } from "../src/domain/repository/IUserRepository";
 import { InMemoryPunchClockRepository } from "../src/infra/inMemory/InMemoryPunchClockRepository";
+import { InMemoryUserRepository } from "../src/infra/inMemory/InMemoryUserRepository";
 import { registerTestPunchClock } from "./factories/punchClockFactory";
 
 describe("GET EMPLOYEE RECORDS", () => {
   let punchClockRepo: IPunchClockRepository;
+  let userRepo: IUserRepository;
   let sut: GetEmployeeRecordsUseCase;
 
   beforeEach(async () => {
     punchClockRepo = new InMemoryPunchClockRepository();
-    sut = new GetEmployeeRecordsUseCase(punchClockRepo);
+    userRepo = new InMemoryUserRepository();
+    sut = new GetEmployeeRecordsUseCase(punchClockRepo, userRepo);
     await registerTestPunchClock(punchClockRepo);
   });
   it("should return a list of employee records, with filters", async () => {
@@ -44,9 +48,7 @@ describe("GET EMPLOYEE RECORDS", () => {
       { adminId: input.adminId }
     );
     expect(output).toHaveLength(1);
-    expect(output).toEqual([
-      expect.objectContaining({ employee: "Employee user-2" }),
-    ]);
+    expect(output).toEqual([expect.objectContaining({ hoursWorked: 11 })]);
   });
   it("should return a list of employee records, without filters", async () => {
     const checkIn = new PunchClock(

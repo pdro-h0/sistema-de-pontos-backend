@@ -4,9 +4,13 @@ import {
 } from "../../communication/request/GetEmployeeRecordsDTO";
 import { PunchClockType } from "../../domain/enums/PunchClockType";
 import { IPunchClockRepository } from "../../domain/repository/IPunchClockRepository";
+import { IUserRepository } from "../../domain/repository/IUserRepository";
 
 export class GetEmployeeRecordsUseCase {
-  constructor(private readonly punchClockRepo: IPunchClockRepository) {}
+  constructor(
+    private readonly punchClockRepo: IPunchClockRepository,
+    private readonly userRepo: IUserRepository
+  ) {}
 
   async execute(
     { employeeId, endDate, startDate }: GetEmployeeRecordsQueryDTO,
@@ -63,8 +67,9 @@ export class GetEmployeeRecordsUseCase {
           Number(group.checkOut.toISOString().split("T")[1].split(":")[0]) -
           Number(group.checkIn.toISOString().split("T")[1].split(":")[0]);
       }
+      const employeeName = await this.userRepo.findById(group.userId);
       result.push({
-        employee: `Employee ${group.userId}`,
+        employee: employeeName!,
         date: group.date,
         checkIn: checkInTime,
         checkOut: checkOutTime,

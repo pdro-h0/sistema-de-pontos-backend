@@ -16,25 +16,12 @@ export class PrismaPunchClockRepository implements IPunchClockRepository {
     };
   }
 
-  async getHistory(
-    userId: string
-  ): Promise<
-    | { date: string; checkIn: string; checkOut: string; hoursWorked: number }[]
-    | []
-  > {
-    throw new Error("Method not implemented.");
-  }
-
   async getByUserId(userId: string): Promise<PunchClock[]> {
     return await db.punchClock.findMany({
       where: {
         userId,
       },
     });
-  }
-
-  async getAll(): Promise<PunchClock[]> {
-    throw new Error("Method not implemented.");
   }
 
   async findByFilters(input: {
