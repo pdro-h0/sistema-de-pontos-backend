@@ -70,12 +70,6 @@ Por fim:
 - Administradores podem realizar login com privilégios elevados.
 - Administradores podem visualizar e gerenciar registros de ponto de todos os funcionários.
 - Administradores podem gerar relatórios com base em filtros como funcionário e intervalo de datas.
-- Funcionários podem realizar login no sistema para autenticação.
-- Funcionários podem registrar horários de entrada e saída.
-- Funcionários podem consultar seu histórico de registros de ponto e total de horas trabalhadas.
-- Administradores podem realizar login com privilégios elevados.
-- Administradores podem visualizar e gerenciar registros de ponto de todos os funcionários.
-- Administradores podem gerar relatórios com base em filtros como funcionário e intervalo de datas.
 
 ---
 
@@ -83,7 +77,7 @@ Por fim:
 
 - A autenticação deve ser segura, utilizando tokens JWT.
 - O sistema deve persistir dados de forma consistente utilizando um banco de dados relacional, acessado via Prisma ORM.
-- O sistema deve ter cobertura de testes automatizados com Vitest.
+- O sistema deve ter cobertura de testes automatizados com Jest.
 - A API deve ser documentada de forma clara e acessível utilizando Swagger.
 - O sistema deve lidar corretamente com operações de data e hora utilizando a biblioteca date-fns.
 - O código deve seguir boas práticas de validação e tipagem com TypeScript e Zod.
